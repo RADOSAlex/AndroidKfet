@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="field_not_null">text cannot be empty</string>
+    <string name="field_not_empty">text cannot be empty</string>
+
+    <string name="phone_10_numbers">Phone must have 10 numbers</string>
+    <string name="phone_numbers_only">Phone is only numbers</string>
+
+    <string name="productType_not_valid">Select a type</string>
+    <string name="price_must_be_positive">Price must be positive</string>
+    <string name="quantity_cant_be_negative">Must Be Positive</string>
+
+
+</resources>
