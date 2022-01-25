@@ -20,7 +20,12 @@
         android:id="@+id/productFragment"
         android:name="fr.ensisa.rados.kfet.ui.ProductFragment"
         android:label="fragment_product"
-        tools:layout="@layout/product_fragment" />
+        tools:layout="@layout/product_fragment">
+    <argument
+        android:name="id"
+        app:argType="long"
+        android:defaultValue="0L" />
+    </fragment>
     <fragment
         android:id="@+id/productListFragment"
         android:name="fr.ensisa.rados.kfet.ui.ProductListFragment"

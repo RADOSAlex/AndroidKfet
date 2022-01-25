@@ -4,7 +4,8 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.Index;
 
-@Entity(primaryKeys = {"kid","pid"}, indices = {@Index("kid"), @Index("pid")})
+@Entity(primaryKeys = {"kid","pid"},
+        indices = {@Index("kid"), @Index("pid")})
 public class KfetProductAssociation {
     public long kid;
     public long pid;

@@ -6,6 +6,8 @@ import androidx.room.PrimaryKey;
 
 import java.util.Date;
 
+import fr.ensisa.rados.kfet.Picture;
+
 @Entity(tableName = "products")
 public class Product {
 
@@ -17,7 +19,7 @@ public class Product {
     private String description;
     private Date expirationDate;
     private int quantity;
-
+    private String picture;
     public Product(){
         this.pid = 0;
     }
@@ -52,6 +54,13 @@ public class Product {
 
     public int getPrice() {
         return price;
+    }
+    public String getPicture() {
+        return picture;
+    }
+    public void setPicture(String picture)
+    {
+        this.picture=picture;
     }
 
     public void setPrice(int price) {

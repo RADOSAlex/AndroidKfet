@@ -10,6 +10,7 @@ import androidx.room.PrimaryKey;
 public class Kfet {
     @PrimaryKey(autoGenerate = true)
     private long kid;
+    private long leaderId;
     private String name;
     private String description;
     private Product[] products;
@@ -22,15 +23,15 @@ public class Kfet {
         this.kid=0;
     }
     @Ignore
-    public Kfet(long kid, String name, String description, Product[] products, int phoneNumber, String url, String highRes, Bitmap lowRes) {
-        this.kid = kid;
+    public Kfet( String name, String description, int phoneNumber, String url, long leaderId) {
+
         this.name = name;
         this.description = description;
-        this.products = products;
         this.phoneNumber = phoneNumber;
         this.url = url;
-        this.highRes = highRes;
-        this.lowRes = lowRes;
+        this.leaderId=leaderId;
+        //this.highRes = highRes;
+        //this.lowRes = lowRes;
     }
 
     public String getHighRes() {

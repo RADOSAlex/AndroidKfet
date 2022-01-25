@@ -25,5 +25,6 @@ public abstract class AppDatabase extends RoomDatabase {
     }
 
     public abstract ProductDao getProductDao ();
+    public abstract KfetDao getKfetDao();
 
 }

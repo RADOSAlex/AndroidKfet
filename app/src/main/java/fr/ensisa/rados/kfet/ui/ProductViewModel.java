@@ -16,7 +16,8 @@ import fr.ensisa.rados.kfet.R;
 import fr.ensisa.rados.kfet.model.Product;
 import fr.ensisa.rados.kfet.model.ProductType;
 
-public class ProductViewModel  extends ViewModel {
+public class ProductViewModel  extends ViewModel
+{
     static private final String TAG = "ProductViewModel";
     private ProductDao productDao;
     private MutableLiveData<Long> id = new MutableLiveData<>();
@@ -24,10 +25,11 @@ public class ProductViewModel  extends ViewModel {
     private MediatorLiveData<Boolean> productValidator;
     private MutableLiveData<String> name;
     private MutableLiveData<Integer> price;
-    private MutableLiveData<ProductType> productType;
-    private MutableLiveData<String> description;
+    private MutableLiveData<ProductType>productType;
+    private MutableLiveData<String>description;
     private MutableLiveData<Date> expirationDate;
     private MutableLiveData<Integer> quantity;
+    private MutableLiveData<String> picture;
 
     private LiveData<Integer> nameValidator;
     private LiveData<Integer> priceValidator;
@@ -35,19 +37,22 @@ public class ProductViewModel  extends ViewModel {
     private LiveData<Integer> descriptionValidator;
     private LiveData<Integer> expirationDateValidator;
     private LiveData<Integer> quantityValidator;
+    private LiveData<Integer> pictureValidator;
 
-    public void setProductDao(ProductDao productDao) {
+    public void setProductDao(ProductDao productDao)
+    {
         this.product = Transformations.switchMap(id, p -> productDao.getById(p));
-        this.name = (MutableLiveData) Transformations.map(product, p -> p.getName());
-        this.productType = (MutableLiveData) Transformations.map(product, p -> p.getProductType());
-        this.description = (MutableLiveData) Transformations.map(product, p -> p.getDescription());
-        this.expirationDate = (MutableLiveData) Transformations.map(product, p -> p.getExpirationDate());
-        this.quantity = (MutableLiveData) Transformations.map(product, p -> p.getQuantity());
-        this.nameValidator = Transformations.map(name, v -> validateName(v));
-        this.productTypeValidator = Transformations.map(productType, v -> validateProductType(v));
-        this.descriptionValidator = Transformations.map(description, v -> validateDescription(v));
-        this.expirationDateValidator = Transformations.map(expirationDate, v -> validateExpirationDate(v));
-        this.quantityValidator = Transformations.map(quantity, v -> validateQuantity(v));
+        this.name = (MutableLiveData) Transformations.map(product, p->p.getName());
+        this.productType = (MutableLiveData) Transformations.map(product, p->p.getProductType());
+        this.description = (MutableLiveData) Transformations.map(product, p->p.getDescription());
+        this.expirationDate = (MutableLiveData) Transformations.map(product, p->p.getExpirationDate());
+        this.quantity = (MutableLiveData) Transformations.map(product, p->p.getQuantity());
+        this.picture = (MutableLiveData) Transformations.map(product, p -> p.getPicture());
+        this.nameValidator = Transformations.map(name, v->validateName(v));
+        this.productTypeValidator = Transformations.map(productType, v->validateProductType(v));
+        this.descriptionValidator =  Transformations.map(description, v->validateDescription(v));
+        this.expirationDateValidator = Transformations.map(expirationDate, v->validateExpirationDate(v));
+        this.quantityValidator =  Transformations.map(quantity, v->validateQuantity(v));
         productValidator = new MediatorLiveData<Boolean>();
 
         productValidator.setValue(Boolean.FALSE);
@@ -58,24 +63,19 @@ public class ProductViewModel  extends ViewModel {
         productValidator.addSource(quantityValidator, productValidatorObserver);
 
 
+
     }
 
     private Observer<Integer> productValidatorObserver = new Observer<Integer>() {
         @Override
         public void onChanged(Integer o) {
             boolean valid = true;
-            if (valid && nameValidator.getValue() != null && nameValidator.getValue() > 0)
-                valid = false;
-            if (valid && priceValidator.getValue() != null && priceValidator.getValue() > 0)
-                valid = false;
-            if (valid && productTypeValidator.getValue() != null && productTypeValidator.getValue() > 0)
-                valid = false;
-            if (valid && expirationDateValidator.getValue() != null && expirationDateValidator.getValue() > 0)
-                valid = false;
-            if (valid && quantityValidator.getValue() != null && quantityValidator.getValue() > 0)
-                valid = false;
-            if (valid && descriptionValidator.getValue() != null && descriptionValidator.getValue() > 0)
-                valid = false;
+            if (valid && nameValidator.getValue() != null && nameValidator.getValue() > 0) valid = false;
+            if (valid && priceValidator.getValue() != null && priceValidator.getValue()> 0) valid = false;
+            if (valid && productTypeValidator.getValue() != null && productTypeValidator.getValue()> 0) valid = false;
+            if (valid && expirationDateValidator.getValue() != null && expirationDateValidator.getValue()> 0) valid = false;
+            if (valid && quantityValidator.getValue() != null && quantityValidator.getValue()> 0) valid = false;
+            if (valid && descriptionValidator.getValue() != null && descriptionValidator.getValue()> 0) valid = false;
             productValidator.postValue(valid);
         }
     };
@@ -94,10 +94,8 @@ public class ProductViewModel  extends ViewModel {
     private int validateProductType(ProductType value) {
         if (value == null) return R.string.field_not_null;
         switch (value) {
-            case food:
-                return 0;
-            case drinks:
-                return 0;
+            case food:return 0;
+            case drinks: return 0;
 
 
         }
@@ -114,11 +112,9 @@ public class ProductViewModel  extends ViewModel {
         return 0;
     }
 
-    private int validateExpirationDate(Date value) {
-        return 0;
-    }
+    private int validateExpirationDate(Date value){return 0;}
 
-    private int validateQuantity(int value) {
+    private int validateQuantity(int value){
         if (value < 0) return R.string.quantity_cant_be_negative;
         return 0;
     }
@@ -255,8 +251,7 @@ public class ProductViewModel  extends ViewModel {
     public void setProductValidatorObserver(Observer<Integer> productValidatorObserver) {
         this.productValidatorObserver = productValidatorObserver;
     }
-
-    public void save() {
+    public void save(LiveData<Product> product) {
         Product product = new Product(
                 getProduct().getValue().getPid(),
                 name.getValue(),
@@ -264,7 +259,7 @@ public class ProductViewModel  extends ViewModel {
                 productType.getValue(),
                 description.getValue(),
                 expirationDate.getValue(),
-                quantity.getValue());
+                quantity.getValue()) ;
         Executor executor = Executors.newSingleThreadExecutor();
         executor.execute(new Runnable() {
             @Override
@@ -290,4 +285,11 @@ public class ProductViewModel  extends ViewModel {
         });
 
     }
+    public MutableLiveData<String> getPicture() {
+        return picture;
+    }
+    public void setPicture(String absoluteFile) {
+        getPicture().postValue(absoluteFile);
+    }
 }
+

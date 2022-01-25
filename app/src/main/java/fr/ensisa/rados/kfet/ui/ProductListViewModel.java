@@ -11,8 +11,7 @@ import java.util.concurrent.Executors;
 import fr.ensisa.rados.kfet.database.ProductDao;
 import fr.ensisa.rados.kfet.model.Product;
 
-public class ProductListViewModel extends ViewModel {
-    public class PersonListViewModel extends ViewModel {
+    public class ProductListViewModel extends ViewModel {
 
         private ProductDao productDao;
         private MediatorLiveData<List<Product>> products;
@@ -26,16 +25,12 @@ public class ProductListViewModel extends ViewModel {
         public LiveData<List<Product>> getProducts() {
             return products;
         }
-
-        public void deletePerson(Product product) {
+        public void deleteProduct(Product product) {
             Executor executor = Executors.newSingleThreadExecutor();
             executor.execute(new Runnable() {
                 @Override
-                public void run() {
-                    productDao.delete(product);
-                }
+                public void run() { productDao.delete(product);}
             });
         }
 
     }
-}
